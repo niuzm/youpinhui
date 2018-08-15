@@ -1,0 +1,4 @@
+0:0:0:0:0:0:0:1 - - [05/Aug/2018:13:10:08 +0800] "GET /brand/findPage.do?page=1&size=10 HTTP/1.1" 404 985 http-bio-9001-exec-1 50
+0:0:0:0:0:0:0:1 - - [05/Aug/2018:13:10:08 +0800] "GET /favicon.ico HTTP/1.1" 404 973 http-bio-9001-exec-3 1
+0:0:0:0:0:0:0:1 - - [05/Aug/2018:13:10:17 +0800] "GET /brand/findPage.do?page=2&size=10 HTTP/1.1" 404 985 http-bio-9001-exec-4 1
+0:0:0:0:0:0:0:1 - - [05/Aug/2018:13:10:31 +0800] "GET /brand/findAll.do HTTP/1.1" 404 983 http-bio-9001-exec-7 2
