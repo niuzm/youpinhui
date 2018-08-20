@@ -24,7 +24,7 @@ app.controller('baseController',function($scope){
 	$scope.selectIds=[];//用户勾选的id结合
 	
 	//勾选时添加元素
-	$scope.updateSelection=function($event,id){
+	$scope.updateSelection=function($event,id){debugger
 		if($event.target.checked){
 		$scope.selectIds.push(id);
 		}else{

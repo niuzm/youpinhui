@@ -1,10 +1,12 @@
 package com.youpinhui.sellergoods.service;
 import java.util.List;
+import java.util.Map;
+
 import com.youpinhui.pojo.TbItemCat;
 
 import entity.PageResult;
 /**
- * 服务层接口
+ * 商品分类 服务层接口
  * @author Administrator
  *
  */
@@ -57,5 +59,20 @@ public interface ItemCatService {
 	 * @return
 	 */
 	public PageResult findPage(TbItemCat itemCat, int pageNum,int pageSize);
+	
+	/**
+	 * 根据父id查询商品分类列表
+	 * @param parentId
+	 * @return
+	 */
+	public List<TbItemCat> findByParentId(Long parentId);
+	
+	
+	/**
+	 * 返回下拉列表数据
+	 * @return
+	 */
+	
+	public List<Map> selectTypeTemplateList();
 	
 }

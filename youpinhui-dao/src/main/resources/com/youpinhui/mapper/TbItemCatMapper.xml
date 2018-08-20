@@ -193,4 +193,9 @@
       type_id = #{typeId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  
+    
+   <select id="selectTypeTemplateList" resultType="java.util.Map">
+	select  DISTINCT id as id,name as text from tb_type_template
+  </select>
 </mapper>

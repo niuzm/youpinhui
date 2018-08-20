@@ -45,7 +45,7 @@ public class GoodsController {
 	 * 增加
 	 * @param goods
 	 * @return
-	 */
+	 *//*
 	@RequestMapping("/add")
 	public Result add(@RequestBody TbGoods goods){
 		try {
@@ -55,7 +55,7 @@ public class GoodsController {
 			e.printStackTrace();
 			return new Result(false, "增加失败");
 		}
-	}
+	}*/
 	
 	/**
 	 * 修改

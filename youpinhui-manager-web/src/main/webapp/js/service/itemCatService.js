@@ -28,5 +28,14 @@ app.service('itemCatService',function($http){
 	//搜索
 	this.search=function(page,rows,searchEntity){
 		return $http.post('../itemCat/search.do?page='+page+"&rows="+rows, searchEntity);
-	}    	
+	}   
+	
+	//根据上级分类查询下级
+	this.findByParentId=function(parentId){
+		return $http.get('../itemCat/findByParentId.do?parentId='+parentId);
+	}
+	//类型模板下拉列表
+	this.findTypeList=function(){
+		return $http.get('../itemCat/selectTypeTemplateList.do');	
+	}
 });

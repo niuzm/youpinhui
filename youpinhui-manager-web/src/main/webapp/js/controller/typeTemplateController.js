@@ -80,12 +80,13 @@ app.controller('typeTemplateController' ,function($scope,$controller,typeTemplat
 			}			
 		);
 	}
-	$scope.brandList={data:[{id:1,text:'联想'},{id:2,text:'华为'},{id:3,text:'小米'}]};//品牌列表
+	$scope.brandList={data:[{id:35,text:'35'},{id:37,text:'37'}]};//品牌列表
 	//品牌下拉列表
 	$scope.findBrandList=function(){			
 		brandService.selectOptionList().success(
 			function(response){
 				$scope.brandList={data:response};//品牌列表
+				console.log($scope.brandList);
 			}			
 		);
 	}

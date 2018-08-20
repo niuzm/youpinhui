@@ -1,5 +1,6 @@
 package com.youpinhui.manager.controller;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -109,6 +110,22 @@ public class ItemCatController {
 	@RequestMapping("/search")
 	public PageResult search(@RequestBody TbItemCat itemCat, int page, int rows  ){
 		return itemCatService.findPage(itemCat, page, rows);		
+	}
+	/**
+	 * 根据父id查询商品分类列表
+	 * @param parentId
+	 * @return
+	 */
+	@RequestMapping("/findByParentId")
+	public List<TbItemCat> findByParentId(Long parentId){
+		return itemCatService.findByParentId(parentId);		
+	}
+	
+	
+
+	@RequestMapping("/selectTypeTemplateList")
+	public List<Map> selectTypeTemplateList(){
+		return itemCatService.selectTypeTemplateList();
 	}
 	
 }

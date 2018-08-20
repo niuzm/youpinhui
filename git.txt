@@ -1,0 +1,19 @@
+[core]
+	symlinks = false
+	repositoryformatversion = 0
+	filemode = false
+	logallrefupdates = true
+[remote "origin"]
+	url = https://github.com/royBluel/youpinhui.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
+	rebase = false
+[branch "origin/master"]
+	remote = origin
+	merge = refs/heads/master
+	rebase = false
+[remote "master"]
+	url = git@github.com:royBluel/youpinhui.git
+	fetch = +refs/heads/*:refs/remotes/master/*
