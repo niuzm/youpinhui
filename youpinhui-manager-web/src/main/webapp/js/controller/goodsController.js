@@ -1,5 +1,5 @@
  //控制层 
-app.controller('goodsController' ,function($scope,$controller   ,goodsService){	
+app.controller('goodsController' ,function($scope,$controller,goodsService,itemCatService){	
 	
 	$controller('baseController',{$scope:$scope});//继承
 	
@@ -26,7 +26,21 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService){
 	$scope.findOne=function(id){				
 		goodsService.findOne(id).success(
 			function(response){
-				$scope.entity= response;					
+				console.log(response);
+				$scope.entity= response;	
+				//扩展属性
+				$scope.entity.goodsDesc.customAttributeItems=JSON.parse($scope.entity.goodsDesc.customAttributeItems);
+				//富文本框赋值
+				editor.html($scope.entity.goodsDesc.introduction);//商品介绍
+				//商品图片
+				$scope.entity.goodsDesc.itemImages=JSON.parse($scope.entity.goodsDesc.itemImages);
+				//规格选择
+				$scope.entity.goodsDesc.specificationItems=JSON.parse($scope.entity.goodsDesc.specificationItems);
+			
+				//转换sku列表中的规格对象
+				for (var i = 0; i < $scope.entity.itemList.length; i++) {
+					$scope.entity.itemList[i].spec=JSON.parse($scope.entity.itemList[i].spec);
+				}
 			}
 		);				
 	}
@@ -76,5 +90,50 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService){
 			}			
 		);
 	}
+    
+	
+$scope.status=['未审核','已审核','审核未通过','已关闭'];
+    
+    $scope.itemCatList=[];//商品分类列表
+    //加载商品分类列表
+    $scope.findItemCatList=function(){
+    	itemCatService.findAll().success(
+    		function(response){
+    			for (var i = 0; i < response.length; i++) {
+    				$scope.itemCatList[response[i].id]=response[i].name;
+				}
+    		}
+    	);
+    }
+
+    
+    $scope.checkAttributeValue=function(specName,optionName){
+    	var items=$scope.entity.goodsDesc.specificationItems;
+    	var obj=$scope.searchObjectByKey(items,'attributeName',specName);
+    	if(obj!=null){
+    		if(obj.attributeValue.indexOf(optionName)>=0){
+    			return true;
+    		}else{
+    			return false;
+    		}
+    	}else{
+    		return false;
+    	}
+    	return true;
+    }
+    
+    //修改状态
+    $scope.updateStatus=function(status){
+    	goodsService.updateStatus($scope.selectIds,status).success(
+    		function(response){
+    			if(response.success){
+					$scope.reloadList();//刷新列表
+					$scope.selectIds=[];
+				}else{
+					alert(response.message);
+				}	
+    		}
+    	);
+    }
     
 });	
