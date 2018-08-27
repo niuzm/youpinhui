@@ -52,6 +52,7 @@ public class GoodsController {
 	public Result add(@RequestBody Goods goods){
 		String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
 		goods.getGoods().setSellerId(sellerId);
+		goods.getGoods().setIsMarketable("1");
 		try {
 			goodsService.add(goods);
 			return new Result(true, "增加成功");
@@ -124,4 +125,14 @@ public class GoodsController {
 		return goodsService.findPage(goods, page, rows);		
 	}
 	
+	@RequestMapping("/setMarketableStatus")
+	public Result setMarketableStatus(Long[] ids, String status) {
+		try {
+			goodsService.setMarketableStatus(ids, status);
+			return new Result(true, "修改成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Result(false, "修改失败");
+		}
+	}
 }

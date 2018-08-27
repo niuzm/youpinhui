@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -36,6 +38,7 @@ import entity.PageResult;
  *
  */
 @Service
+@Transactional
 public class GoodsServiceImpl implements GoodsService {
 
 	@Autowired
@@ -83,7 +86,7 @@ public class GoodsServiceImpl implements GoodsService {
 		//状态未审核
 		goods.getGoods().setAuditStatus("0");
 		//插入商品的基本信息
-		goodsMapper.insert(goods.getGoods());	
+		goodsMapper.insert(goods.getGoods());
 		//获取商品的id
 		goods.getGoodsDesc().setGoodsId(goods.getGoods().getId());
 		//插入商品扩展信息
@@ -241,7 +244,9 @@ public class GoodsServiceImpl implements GoodsService {
 	@Override
 	public void delete(Long[] ids) {
 		for(Long id:ids){
-			goodsMapper.deleteByPrimaryKey(id);
+			TbGoods goods = goodsMapper.selectByPrimaryKey(id);
+			goods.setIsDelete("1");//逻辑删除
+			goodsMapper.updateByPrimaryKey(goods);
 		}		
 	}
 	
@@ -252,7 +257,7 @@ public class GoodsServiceImpl implements GoodsService {
 		
 		TbGoodsExample example=new TbGoodsExample();
 		Criteria criteria = example.createCriteria();
-		
+		criteria.andIsDeleteIsNull();//指定条件为未删除的商品
 		if(goods!=null){			
 						if(goods.getSellerId()!=null && goods.getSellerId().length()>0){
 				//criteria.andSellerIdLike("%"+goods.getSellerId()+"%");
@@ -295,6 +300,15 @@ public class GoodsServiceImpl implements GoodsService {
 		for (Long id : ids) {
 			TbGoods goods = goodsMapper.selectByPrimaryKey(id);
 			goods.setAuditStatus(status);
+			goodsMapper.updateByPrimaryKey(goods);
+		}
+	}
+
+	@Override
+	public void setMarketableStatus(Long[] ids, String status) {
+		for (Long id : ids) {
+			TbGoods goods = goodsMapper.selectByPrimaryKey(id);
+			goods.setIsMarketable(status);//设置上下架状态
 			goodsMapper.updateByPrimaryKey(goods);
 		}
 	}

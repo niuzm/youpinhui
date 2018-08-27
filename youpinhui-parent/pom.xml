@@ -283,5 +283,8 @@
 		<module>youpinhui-sellergoods-service</module>
 		<module>youpinhui-manager-web</module>
 		<module>youpinhui-shop-web</module>
+		<module>youpinhui-content-interface</module>
+		<module>youpinhui-content-service</module>
+		<module>youpinhui-portal-web</module>
 	</modules>
 </project>

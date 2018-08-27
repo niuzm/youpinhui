@@ -65,4 +65,10 @@ public interface GoodsService {
 	 * @param status
 	 */
 	public void updateStatus(Long[] ids,String status);
+	/**
+	 * 设置商品上架或者下架
+	 * @param ids
+	 * @param status
+	 */
+	public void setMarketableStatus(Long[] ids,String status);
 }

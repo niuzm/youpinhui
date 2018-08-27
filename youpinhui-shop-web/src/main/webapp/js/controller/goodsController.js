@@ -282,5 +282,23 @@ app.controller('goodsController' ,function($scope,$controller,$location,
     }
     
     
+    //修改状态
+    $scope.setMarketableStatus=function(status){
+    	goodsService.setMarketableStatus($scope.selectIds,status).success(
+    		function(response){
+    			if(response.success){
+					$scope.reloadList();//刷新列表
+					$scope.selectIds=[];
+					if(status=="1"){
+						alert("上架成功");
+					}else{
+						alert("下架成功");
+					}
+				}else{
+					alert(response.message);
+				}	
+    		}
+    	);
+    }
     
 });	
