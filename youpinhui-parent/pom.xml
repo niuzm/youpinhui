@@ -286,5 +286,10 @@
 		<module>youpinhui-content-interface</module>
 		<module>youpinhui-content-service</module>
 		<module>youpinhui-portal-web</module>
+		<module>pinyougou-solr-util</module>
+		<module>youpinhui-solr-util</module>
+		<module>youpinhui-search-interface</module>
+		<module>youpinhui-search-service</module>
+		<module>youpinhui-search-web</module>
 	</modules>
 </project>
