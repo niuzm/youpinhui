@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.dubbo.config.annotation.Service;
@@ -101,7 +102,9 @@ public class ItemCatServiceImpl implements ItemCatService {
 		Page<TbItemCat> page= (Page<TbItemCat>)itemCatMapper.selectByExample(example);		
 		return new PageResult(page.getTotal(), page.getResult());
 	}
-		
+	
+	@Autowired
+	private RedisTemplate redisTemplate;
 	/**
 	 * 根据父id查询商品分类列表
 	 * @param parentId
@@ -111,7 +114,17 @@ public class ItemCatServiceImpl implements ItemCatService {
 	public List<TbItemCat> findByParentId(Long parentId) {
 		TbItemCatExample example=new TbItemCatExample();
 		Criteria criteria = example.createCriteria();
+		//设置条件
 		criteria.andParentIdEqualTo(parentId);
+		
+		//将模板ID放入缓存（以商品分类名称为key）
+		
+		List<TbItemCat> itemCatList = findAll();
+		for (TbItemCat itemCat : itemCatList) {
+			redisTemplate.boundHashOps("itemCat").put(itemCat.getName(), itemCat.getTypeId());
+		}
+		System.out.println("模板id放入缓存");
+		//条件查询
 		return itemCatMapper.selectByExample(example);
 	}
 
