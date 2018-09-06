@@ -5,8 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.data.solr.core.query.Criteria;
@@ -41,6 +44,10 @@ public class ItemSearchServiceImpl implements ItemSearchService {
 	 * @return
 	 */
 	public Map search(Map searchMap) {
+		
+		//空格处理
+		String keywords=(String) searchMap.get("keywords");
+		searchMap.put("keywords", keywords.replaceAll(" ",""));
 		//返回的map
 		Map map=new HashMap();
 		
@@ -117,6 +124,38 @@ public class ItemSearchServiceImpl implements ItemSearchService {
 			}
 		}
 		
+		//1.6分页
+		//页码
+		Integer pageNo=(Integer) searchMap.get("pageNo");
+		if(pageNo==null) {
+			pageNo=1;//初始化页码
+		}
+		//页面大小
+		Integer pageSize=(Integer) searchMap.get("pageSize");
+		if(pageSize==null) {
+			pageSize=20;//初始化大小
+		}
+		//起始索引
+		query.setOffset((pageNo-1)*pageSize);
+		//设置每页记录数
+		query.setRows(pageSize);
+		
+		//1.7价格排序
+		
+		String sortDirec=(String) searchMap.get("sort");//升降序
+		String sortField=(String) searchMap.get("sortField");
+		if(sortDirec!=null && !sortDirec.equals("")) {
+			if(sortDirec.equals("ASC")) {
+				Sort sort=new Sort(Sort.Direction.ASC, "item_"+sortField);
+				query.addSort(sort);
+			}else if(sortDirec.equals("DESC")) {
+				Sort sort=new Sort(Sort.Direction.DESC, "item_"+sortField);
+				query.addSort(sort);
+			}
+			}
+		
+		
+		
 		//************ 高亮结果集  ************
 		//高亮页对象
 		HighlightPage<TbItem> page = solrTemplate.queryForHighlightPage(query,TbItem.class);
@@ -135,6 +174,10 @@ public class ItemSearchServiceImpl implements ItemSearchService {
 			}
 		}
 		map.put("rows", page.getContent());
+		//总页数
+		map.put("totalPages", page.getTotalPages());
+		//总记录数
+		map.put("total", page.getTotalElements());
 		return map;
 	}
 	

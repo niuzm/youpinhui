@@ -1,7 +1,7 @@
 app.controller('searchController',function($scope,searchService){
 	
 	
-	$scope.searchMap={'keywords':'','category':'','brand':'','spec':{},'price':''};
+	$scope.searchMap={'keywords':'','category':'','brand':'','spec':{},'price':'','pageNo':1,'pageSize':25,'sort':'','sortField':''};
 	
 	//enter
 	  $scope.enterEvent = function(e) {
@@ -12,11 +12,48 @@ app.controller('searchController',function($scope,searchService){
 	    }
 	//搜索方法
 	$scope.search=function(){
+		$scope.searchMap.pageNo=parseInt($scope.searchMap.pageNo);
 		searchService.search($scope.searchMap).success(
 				function(response){
 					$scope.resultMap=response;
+					buildPageLable();//构建分页栏
 				}
 		);
+	}
+	
+	
+	//构建分页栏
+	buildPageLable=function(){
+		var startPage=1;//开始页码
+		var endPage=$scope.resultMap.totalPages;//结束页码
+		
+		$scope.startDot=true;
+		$scope.endDot=true;
+		
+		
+		if($scope.resultMap.totalPages>5){//总页面大于5
+			if($scope.searchMap.pageNo<=3){
+				endPage=5;//当前页码小于等于3 显示前五页
+				$scope.startDot=false;
+			}else if($scope.searchMap.pageNo>=$scope.resultMap.totalPages-2){
+				// 显示末尾五页
+				startPage=$scope.resultMap.totalPages-4;
+				$scope.endDot=false;
+			}else{
+				//显示中间五页
+				startPage=$scope.searchMap.pageNo-2;
+				endPage=$scope.searchMap.pageNo+2;
+				
+			}
+		}else{
+			$scope.startDot=false;
+			$scope.endDot=false;
+			
+		}
+		$scope.pageLable=[];
+		for (var i = startPage; i <=endPage; i++) {
+			$scope.pageLable.push(i);
+		}
 	}
 	
 	
@@ -49,6 +86,37 @@ app.controller('searchController',function($scope,searchService){
 		
 	}
 	
+	//分页查询
+	$scope.queryByPage=function(pageNo){
+		if(pageNo<1 || pageNo> $scope.resultMap.totalPges){
+			return;
+		}
+		$scope.searchMap.pageNo=pageNo;
+		$scope.search();
+	}
 	
+	//判断当前页是否是第一页
+	$scope.isStartPage=function(){
+		if($scope.searchMap.pageNo==1){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	//判断当前页是否是第一页
+	$scope.isEndPage=function(){
+		if($scope.searchMap.pageNo==$scope.resultMap.totalPages){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	//排序查询
+	$scope.sortSearch=function(sortField,sort){
+		$scope.searchMap.sortField=sortField;
+		$scope.searchMap.sort=sort;
+		
+		$scope.search();
+	}
 	
 });
