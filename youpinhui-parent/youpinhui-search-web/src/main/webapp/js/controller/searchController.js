@@ -1,4 +1,4 @@
-app.controller('searchController',function($scope,searchService){
+app.controller('searchController',function($scope,$location,searchService){
 	
 	
 	$scope.searchMap={'keywords':'','category':'','brand':'','spec':{},'price':'','pageNo':1,'pageSize':25,'sort':'','sortField':''};
@@ -116,6 +116,22 @@ app.controller('searchController',function($scope,searchService){
 		$scope.searchMap.sortField=sortField;
 		$scope.searchMap.sort=sort;
 		
+		$scope.search();
+	}
+	
+	// 判断关键字是否是品牌
+	$scope.keywordsIsBrand=function(){
+		for (var i = 0; i < $scope.resultMap.brandList.length; i++) {
+			if($scope.searchMap.keywords.indexOf($scope.resultMap.brandList[i].text)>=0){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	//获取关键字
+	$scope.loadkeywords=function(){
+		$scope.searchMap.keywords=$location.search()['keywords'];
 		$scope.search();
 	}
 	

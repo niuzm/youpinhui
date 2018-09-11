@@ -291,5 +291,8 @@
 		<module>youpinhui-search-interface</module>
 		<module>youpinhui-search-service</module>
 		<module>youpinhui-search-web</module>
+		<module>youpinhui-page-interfacde</module>
+		<module>youpinhui-page-service</module>
+		<module>youpinhui-page-interface</module>
 	</modules>
 </project>
