@@ -1,6 +1,7 @@
 package com.youpinhui.sellergoods.service;
 import java.util.List;
 import com.youpinhui.pojo.TbGoods;
+import com.youpinhui.pojo.TbItem;
 import com.youpinhui.pojogroup.Goods;
 
 import entity.PageResult;
@@ -71,4 +72,12 @@ public interface GoodsService {
 	 * @param status
 	 */
 	public void setMarketableStatus(Long[] ids,String status);
+	
+	/**
+	 * 根据SPU的id集合和状态查询SKU列表
+	 * @param goodsIds
+	 * @param status
+	 * @return
+	 */
+	public List<TbItem> findItemListByGoodsIdListAndStatus(Long[] goodsIds,String status);
 }

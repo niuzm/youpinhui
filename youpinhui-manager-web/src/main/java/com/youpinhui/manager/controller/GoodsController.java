@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.youpinhui.pojo.TbGoods;
+import com.youpinhui.pojo.TbItem;
 import com.youpinhui.pojogroup.Goods;
+import com.youpinhui.search.service.ItemSearchService;
 import com.youpinhui.sellergoods.service.GoodsService;
 
 import entity.PageResult;
@@ -111,6 +113,8 @@ public class GoodsController {
 	public PageResult search(@RequestBody TbGoods goods, int page, int rows  ){
 		return goodsService.findPage(goods, page, rows);		
 	}
+	@Reference(timeout=50000)
+	private ItemSearchService searchService;
 	/**
 	 * 修改状态
 	 * @param ids
@@ -121,6 +125,12 @@ public class GoodsController {
 	public Result updateStatus(Long[] ids, String status) {
 		try {
 			goodsService.updateStatus(ids, status);
+			
+			if("1".equals(status)) {//审核通过
+				List<TbItem> itemlist = goodsService.findItemListByGoodsIdListAndStatus(ids, status);
+				searchService.importList(itemlist);
+			}
+			
 			return new Result(true, "成功");
 		} catch (Exception e) {
 			e.printStackTrace();

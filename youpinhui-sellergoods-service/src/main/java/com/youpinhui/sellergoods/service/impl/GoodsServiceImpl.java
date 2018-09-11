@@ -1,4 +1,5 @@
 package com.youpinhui.sellergoods.service.impl;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -311,6 +312,25 @@ public class GoodsServiceImpl implements GoodsService {
 			goods.setIsMarketable(status);//设置上下架状态
 			goodsMapper.updateByPrimaryKey(goods);
 		}
+	}
+	
+	/**
+	 * 根据SPU的id集合和状态查询SKU列表
+	 * @param goodsIds
+	 * @param status
+	 * @return
+	 */
+	public List<TbItem> findItemListByGoodsIdListAndStatus(Long[] goodsIds,String status){
+		
+		//条件
+		TbItemExample example=new TbItemExample();
+		com.youpinhui.pojo.TbItemExample.Criteria criteria = example.createCriteria();
+		criteria.andStatusEqualTo(status);//已审核
+		criteria.andGoodsIdIn(Arrays.asList(goodsIds));//SPU  ID集合
+	
+		
+		return 	itemMapper.selectByExample(example);
+		
 	}
 	
 }

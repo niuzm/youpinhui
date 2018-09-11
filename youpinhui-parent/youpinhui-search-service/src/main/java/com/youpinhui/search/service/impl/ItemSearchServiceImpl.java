@@ -234,6 +234,17 @@ public class ItemSearchServiceImpl implements ItemSearchService {
 		
 		return map;
 	}
+
+	/**
+	 * 导入列表
+	 * @param list
+	 */
+	@Override
+	public void importList(List list) {
+		// TODO Auto-generated method stub
+		solrTemplate.saveBeans(list);
+		solrTemplate.commit();
+	}
 	
 	
 }
