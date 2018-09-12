@@ -2,6 +2,7 @@
 ## 项目介绍
 本项目后台使用spring+springMVC+MyBatis,前台使用boostrap+angularJS,数据库使用MySql，分布式使用dubbox+zookeeper实现。
 登录功能使用SpringSecurity实现， 使用Bcrypt算法进行加密。<br/>
+使用FreeMarker生成静态页面，提升页面访问速度。<br/>
 注意：要运行此项目，必须先安装zookeeper，配置项目中相关配置文件的duoobx配置。install各个依赖项目后再分别run service和web项目。
 <br/>
 
