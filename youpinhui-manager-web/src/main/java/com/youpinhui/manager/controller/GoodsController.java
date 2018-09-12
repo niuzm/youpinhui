@@ -1,10 +1,13 @@
 package com.youpinhui.manager.controller;
+import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.youpinhui.page.service.ItemPageService;
 import com.youpinhui.pojo.TbGoods;
 import com.youpinhui.pojo.TbItem;
 import com.youpinhui.pojogroup.Goods;
@@ -95,6 +98,10 @@ public class GoodsController {
 	public Result delete(Long [] ids){
 		try {
 			goodsService.delete(ids);
+			
+			//从索引库中删除
+			searchService.deleteByGoodsIds(Arrays.asList(ids));
+			
 			return new Result(true, "删除成功"); 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -136,5 +143,11 @@ public class GoodsController {
 			e.printStackTrace();
 			return new Result(false, "失败");
 		}
+	}
+	@Reference(timeout=100000)
+	private ItemPageService pageService;
+	@RequestMapping("/genHtml")
+	public void genHtml(Long goodsId) {
+		pageService.genItemHtml(goodsId);
 	}
 }

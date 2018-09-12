@@ -21,6 +21,7 @@ import org.springframework.data.solr.core.query.Query;
 import org.springframework.data.solr.core.query.SimpleFilterQuery;
 import org.springframework.data.solr.core.query.SimpleHighlightQuery;
 import org.springframework.data.solr.core.query.SimpleQuery;
+import org.springframework.data.solr.core.query.SolrDataQuery;
 import org.springframework.data.solr.core.query.result.GroupEntry;
 import org.springframework.data.solr.core.query.result.GroupPage;
 import org.springframework.data.solr.core.query.result.GroupResult;
@@ -243,6 +244,19 @@ public class ItemSearchServiceImpl implements ItemSearchService {
 	public void importList(List list) {
 		// TODO Auto-generated method stub
 		solrTemplate.saveBeans(list);
+		solrTemplate.commit();
+	}
+	/**
+	 * 删除商品列表
+	 * @param goodsIds
+	 */
+	@Override
+	public void deleteByGoodsIds(List goodsIds) {
+		SolrDataQuery query=new SimpleQuery();
+		Criteria criteria=new Criteria("item_goodsid").in(goodsIds);
+		query.addCriteria(criteria);
+		
+		solrTemplate.delete(query);
 		solrTemplate.commit();
 	}
 	
