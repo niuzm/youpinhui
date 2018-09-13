@@ -59,8 +59,8 @@ public class ItemPageServiceImpl implements ItemPageService {
 			String itemCat2 = catMapper.selectByPrimaryKey(goods.getCategory2Id()).getName();
 			String itemCat3 = catMapper.selectByPrimaryKey(goods.getCategory3Id()).getName();
 			dataModel.put("itemCat1", itemCat1);
-			dataModel.put("itemCat1", itemCat2);
-			dataModel.put("itemCat1", itemCat3);
+			dataModel.put("itemCat2", itemCat2);
+			dataModel.put("itemCat3", itemCat3);
 			//4.读取SKU信息
 			
 			TbItemExample example=new TbItemExample();
